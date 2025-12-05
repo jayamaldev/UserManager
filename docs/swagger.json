@@ -1,0 +1,158 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/users": {
+            "get": {
+                "description": "Retrieve a list of all users",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.User"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a New User",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create a New User",
+                "parameters": [
+                    {
+                        "description": "User Details for Creation",
+                        "name": "UserInput",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/id": {
+            "get": {
+                "description": "Retrieve a user",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get single user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.User"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete existing User",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete existing User",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update existing User",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update existing User",
+                "parameters": [
+                    {
+                        "description": "User Details for Update",
+                        "name": "UserInput",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.User"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.User": {
+            "type": "object",
+            "required": [
+                "email",
+                "firstName",
+                "lastName"
+            ],
+            "properties": {
+                "age": {
+                    "description": "@Description User age. Optional",
+                    "type": "integer"
+                },
+                "email": {
+                    "description": "@Description User email",
+                    "type": "string"
+                },
+                "firstName": {
+                    "description": "@Description User First Name. Max length 50, min length 2",
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 2
+                },
+                "lastName": {
+                    "description": "@Description User Last Name. Max length 50, min length 2",
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 2
+                },
+                "phone": {
+                    "description": "@Description User phone. Optional",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "@Description User status. Optional",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,30 @@
+services:
+  database:
+    image: "postgres"
+    ports:
+      - 5432:5432
+
+    networks:
+      - db
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123 
+      POSTGRES_DB: user_manager
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - 8888:80
+
+    networks:
+      - db
+
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin123
+      MAX_LOGIN_ATTEMPTS: 100
+
+networks:
+  db: 
+    driver: bridge

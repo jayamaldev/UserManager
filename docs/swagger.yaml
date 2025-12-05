@@ -1,0 +1,106 @@
+definitions:
+  dto.User:
+    properties:
+      age:
+        description: '@Description User age. Optional'
+        type: integer
+      email:
+        description: '@Description User email'
+        type: string
+      firstName:
+        description: '@Description User First Name. Max length 50, min length 2'
+        maxLength: 50
+        minLength: 2
+        type: string
+      lastName:
+        description: '@Description User Last Name. Max length 50, min length 2'
+        maxLength: 50
+        minLength: 2
+        type: string
+      phone:
+        description: '@Description User phone. Optional'
+        type: string
+      status:
+        description: '@Description User status. Optional'
+        type: string
+    required:
+    - email
+    - firstName
+    - lastName
+    type: object
+info:
+  contact: {}
+paths:
+  /users:
+    get:
+      description: Retrieve a list of all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.User'
+            type: array
+      summary: Get all users
+    post:
+      consumes:
+      - application/json
+      description: Create a New User
+      parameters:
+      - description: User Details for Creation
+        in: body
+        name: UserInput
+        required: true
+        schema:
+          $ref: '#/definitions/dto.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.User'
+      summary: Create a New User
+  /users/id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete existing User
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Delete existing User
+    get:
+      description: Retrieve a user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.User'
+      summary: Get single user
+    patch:
+      consumes:
+      - application/json
+      description: Update existing User
+      parameters:
+      - description: User Details for Update
+        in: body
+        name: UserInput
+        required: true
+        schema:
+          $ref: '#/definitions/dto.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.User'
+      summary: Update existing User
+swagger: "2.0"
