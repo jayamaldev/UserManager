@@ -49,7 +49,7 @@ func (s *Server) getUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("users list retrieved", users)
+	fmt.Println("users list retrieved", len(users))
 	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(users)
 	if err != nil {

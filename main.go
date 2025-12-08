@@ -6,8 +6,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"strings"
+	"syscall"
+	"time"
 	"user-manager/api"
 	"user-manager/config"
 	"user-manager/database"
@@ -42,15 +45,38 @@ func main() {
 		log.Fatal(err)
 	}
 
-	defer server.Pool.Close()
-
 	r.Route("/users", server.UserRouter)
 
-	fmt.Println("Server is Running on port 8080")
-	err = http.ListenAndServe(fmt.Sprintf(":%d", cfg.APPPort), r)
-	if err != nil {
-		log.Fatal("Error on starting server!")
+	srv := &http.Server{
+		Addr:    fmt.Sprintf(":%d", cfg.APPPort),
+		Handler: r,
 	}
+	go func() {
+		fmt.Println("Server is Running on port 8080")
+		err = srv.ListenAndServe()
+		if err != nil && err != http.ErrServerClosed {
+			log.Fatal("Error on Listening server!")
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
+	<-quit
+
+	log.Println("Shutdown Signal Received")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	err = srv.Shutdown(ctx)
+	if err != nil {
+		log.Fatal("Forced Shutdown: ", err)
+	}
+
+	server.Pool.Close()
+	log.Println("DB Connection Pools Closed")
+
+	log.Println("Server Exited Gracefully")
 }
 
 func ConnectDatabase(cfg *config.Config) (*api.Server, error) {
