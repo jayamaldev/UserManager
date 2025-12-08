@@ -1,11 +1,22 @@
 services:
+  user-services-app:
+    build: .
+    ports:
+      - 8080:8080
+
+    depends_on:
+      - database
+
+    networks:
+      - user-services
+
   database:
     image: "postgres"
     ports:
       - 5432:5432
 
     networks:
-      - db
+      - user-services
 
     environment:
       POSTGRES_USER: postgres
@@ -18,7 +29,7 @@ services:
       - 8888:80
 
     networks:
-      - db
+      - user-services
 
     environment:
       PGADMIN_DEFAULT_EMAIL: user@gmail.com
@@ -26,5 +37,5 @@ services:
       MAX_LOGIN_ATTEMPTS: 100
 
 networks:
-  db: 
+  user-services: 
     driver: bridge

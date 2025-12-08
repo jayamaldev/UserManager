@@ -85,6 +85,8 @@ func ConnectDatabase(cfg *config.Config) (*api.Server, error) {
 	connString := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s",
 		cfg.DBUser, cfg.DBPassword, cfg.DBHost, cfg.DBPort, cfg.DBName)
 
+	fmt.Println("DB connection string: ", connString)
+
 	pool, err := pgxpool.New(ctx, connString)
 	if err != nil {
 		return nil, err
